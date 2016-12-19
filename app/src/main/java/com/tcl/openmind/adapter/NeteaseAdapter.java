@@ -36,4 +36,9 @@ public class NeteaseAdapter extends BaseAdapter {
     public void loadingStart() {
 
     }
+
+    @Override
+    public void loadingEnd() {
+
+    }
 }

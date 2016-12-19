@@ -23,7 +23,7 @@ import com.lidroid.xutils.util.LogUtils;
 import com.tcl.openmind.R;
 import com.tcl.openmind.adapter.ZhihuAdapter;
 import com.tcl.openmind.data.zhihu.ZhihuDaily;
-import com.tcl.openmind.presenter.ZhihuPresenter;
+import com.tcl.openmind.presenter.imp.ZhihuPresenter;
 
 import butterknife.ButterKnife;
 
@@ -83,7 +83,7 @@ public class ZhihuFragment extends BaseFragment {
     private void initView() {
 
         mAdapter = new ZhihuAdapter(mContext);
-        mPresenter = new ZhihuPresenter();
+        mPresenter = new ZhihuPresenter(mContext, this);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setHasFixedSize(true);
@@ -96,6 +96,20 @@ public class ZhihuFragment extends BaseFragment {
 
     private void initListener() {
 
+    }
+
+    @Override
+    public void showProgressDialog() {
+        if (mProgressBar != null) {
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void hideProgressDialog() {
+        if (mProgressBar != null) {
+            mProgressBar.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

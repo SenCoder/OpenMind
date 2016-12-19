@@ -10,7 +10,7 @@ public class ZhihuDaily {
 
     private String mData;
 
-    private ArrayList<ZhihuDailyItem> mZhihuDailyItems;
+    private ArrayList<ZhihuDailyItem> mDailyItems;
 
     private ArrayList<ZhihuDailyItem> stories;
 
@@ -22,12 +22,12 @@ public class ZhihuDaily {
         this.mData = data;
     }
 
-    public ArrayList<ZhihuDailyItem> getZhihuDailyItems() {
-        return mZhihuDailyItems;
+    public ArrayList<ZhihuDailyItem> getDailyItems() {
+        return mDailyItems;
     }
 
-    public void setZhihuDailyItems(ArrayList<ZhihuDailyItem> zhihuDailyItems) {
-        this.mZhihuDailyItems = zhihuDailyItems;
+    public void setDailyItems(ArrayList<ZhihuDailyItem> dailyItems) {
+        this.mDailyItems = dailyItems;
     }
 
     public ArrayList<ZhihuDailyItem> getStories() {

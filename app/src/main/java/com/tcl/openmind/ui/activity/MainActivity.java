@@ -64,17 +64,14 @@ public class MainActivity extends AppCompatActivity
         addFragmentAndTitle();
 
         if (savedInstanceState == null) {
-            LogUtils.d("savedInstanceState == null");
             mCurrNavigationId = SharePreferenceUtil.getNevigationItem(this);
             if (mCurrNavigationId != -1) {
                 mCurrentMenuItem = navigationView.getMenu().findItem(mCurrNavigationId);
             }
             if (mCurrentMenuItem == null){
-                LogUtils.d("mCurrentMenuItem == null");
                 mCurrentMenuItem = navigationView.getMenu().findItem(R.id.nav_zhihu);
             }
             if (mCurrentMenuItem != null) {
-                LogUtils.d("mCurrentMenuItem != null");
                 mCurrentMenuItem.setChecked(true);
                 // TODO: 16/8/17 add a fragment and set toolbar title
                 BaseFragment fragment = getFragmentById(mCurrentMenuItem.getItemId());

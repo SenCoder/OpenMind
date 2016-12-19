@@ -6,4 +6,6 @@ package com.tcl.openmind.presenter.api;
 
 public interface IPresenter {
 
+    void unSubscribe();
+
 }
