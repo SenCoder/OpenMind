@@ -1,7 +1,7 @@
 package com.tcl.openmind.data.zhihu;
 
 /**
- * Created by shengyuan on 16-12-19.
+ * Java Bean.
  */
 
 public class ZhihuDailyItem {

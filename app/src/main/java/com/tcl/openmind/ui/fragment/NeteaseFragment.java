@@ -21,4 +21,14 @@ public class NeteaseFragment extends BaseFragment {
 
         return view;
     }
+
+    @Override
+    public void showProgressDialog() {
+
+    }
+
+    @Override
+    public void hideProgressDialog() {
+
+    }
 }
