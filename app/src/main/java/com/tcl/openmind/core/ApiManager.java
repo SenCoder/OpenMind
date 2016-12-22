@@ -1,5 +1,7 @@
 package com.tcl.openmind.core;
 
+import com.lidroid.xutils.util.LogUtils;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -12,13 +14,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiManager {
 
 
+    private ApiManager() {
+
+    }
+
+    public static ApiManager getInstance() {
+        if (instance == null)
+            instance = new ApiManager();
+        return instance;
+    }
+
+    private static ApiManager instance;
+
     private ZhihuApi mZhihuApi;
 
     // I was wondering why this object is needed.
     private Object zhihuMonitor = new Object();
 
 
-    public ZhihuApi getZhihuApiService() {
+    public ZhihuApi getZhihuApi() {
 
         OkHttpClient client = new OkHttpClient.Builder().build();
 
@@ -34,7 +48,7 @@ public class ApiManager {
                 }
             }
         }
-
+        LogUtils.d("check zhihuApi implement = true");
         return mZhihuApi;
     }
 }

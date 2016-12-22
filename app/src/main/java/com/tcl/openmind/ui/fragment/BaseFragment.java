@@ -12,7 +12,7 @@ public abstract class BaseFragment extends Fragment {
 
     public abstract void hideProgressDialog();
 
-    protected void loadData() {
+    protected void loadDate() {
 
     }
 }

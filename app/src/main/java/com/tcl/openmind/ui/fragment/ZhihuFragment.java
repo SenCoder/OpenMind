@@ -12,6 +12,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,13 +39,17 @@ public class ZhihuFragment extends BaseFragment {
 
     private TextView mNoConnectionText;
 
+    LinearLayoutManager mLayoutManager;
+
     private boolean isNetworkAvailable;
     private boolean mMonitoringConnectivity;
     private boolean isLoading;
 
     private ZhihuAdapter mAdapter;
     private ZhihuPresenter mPresenter;
-    private String mCurrentLoadData;
+    private String mCurrentLoadDate = "0";
+
+    RecyclerView.OnScrollListener loadingMoreListener;
 
     @Nullable
     @Override
@@ -69,7 +74,8 @@ public class ZhihuFragment extends BaseFragment {
         initListener();
 
         if (isNetworkAvailable) {
-            loadData();
+            LogUtils.d("check network available = true");
+            loadDate();
         }
 
     }
@@ -82,10 +88,12 @@ public class ZhihuFragment extends BaseFragment {
 
     private void initView() {
 
+        mLayoutManager = new LinearLayoutManager(mContext);
+
         mAdapter = new ZhihuAdapter(mContext);
         mPresenter = new ZhihuPresenter(mContext, this);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(
                 new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL)
@@ -95,7 +103,28 @@ public class ZhihuFragment extends BaseFragment {
     }
 
     private void initListener() {
+        loadingMoreListener = new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
 
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy > 0) {
+                    // move down
+                    int visibleItemCount = mLayoutManager.getChildCount();
+                    int totalItemCount = mLayoutManager.getItemCount();
+                    int pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
+                    if (!isLoading && (visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                        isLoading = true;
+                        loadMoreDate();
+                    }
+                }
+            }
+        };
     }
 
     @Override
@@ -113,18 +142,21 @@ public class ZhihuFragment extends BaseFragment {
     }
 
     @Override
-    protected void loadData() {
-        super.loadData();
+    protected void loadDate() {
+        super.loadDate();
+        LogUtils.d("check loadDate = true");
         if (mAdapter.getItemCount() > 0) {
             mAdapter.clearData();
         }
-        mCurrentLoadData = "0";
-        mPresenter.getLastZhihuNews();
+        mCurrentLoadDate = "0";
+        mPresenter.getLatestZhihuNews();
     }
 
-    private void loadMoreData() {
+    private void loadMoreDate() {
         mAdapter.loadingStart();
-        mPresenter.getTheDaily(mCurrentLoadData);
+//        if (mCurrentLoadDate == null)
+//            mCurrentLoadDate = "0";
+        mPresenter.getTheDaily(mCurrentLoadDate);
     }
 
     public void updateList(ZhihuDaily zhihuDaily) {
@@ -132,11 +164,13 @@ public class ZhihuFragment extends BaseFragment {
             isLoading = false;
             mAdapter.loadingEnd();
         }
-        mCurrentLoadData = zhihuDaily.getData();
+        LogUtils.d("zhihuDaily is not null : " + (zhihuDaily != null));
+        mCurrentLoadDate = zhihuDaily.getDate();
+        LogUtils.d("zhihuDaily.date : " + (zhihuDaily.getDate() != null));
         mAdapter.addItems(zhihuDaily.getStories());
 //        if the new data is not full of the screen, need load more data
         if (!mRecyclerView.canScrollVertically(View.SCROLL_INDICATOR_BOTTOM)) {
-            loadMoreData();
+            loadMoreDate();
         }
     }
 
@@ -146,7 +180,7 @@ public class ZhihuFragment extends BaseFragment {
         final NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
         isNetworkAvailable = activeNetworkInfo != null && activeNetworkInfo.isConnected();
-        LogUtils.d("isNetworkAvailable = " + isNetworkAvailable);
+
         if (!isNetworkAvailable && mProgressBar != null) {//不判断容易抛出空指针异常
             LogUtils.d("Network is OK");
             mProgressBar.setVisibility(View.INVISIBLE);

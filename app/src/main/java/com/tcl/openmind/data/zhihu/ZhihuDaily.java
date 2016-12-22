@@ -1,5 +1,7 @@
 package com.tcl.openmind.data.zhihu;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
@@ -8,18 +10,21 @@ import java.util.ArrayList;
 
 public class ZhihuDaily {
 
-    private String mData;
+    @SerializedName("date")
+    private String date;
 
+    @SerializedName("top_stories")
     private ArrayList<ZhihuDailyItem> mDailyItems;
 
+    @SerializedName("stories")
     private ArrayList<ZhihuDailyItem> stories;
 
-    public String getData() {
-        return mData;
+    public String getDate() {
+        return date;
     }
 
-    public void setData(String data) {
-        this.mData = data;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public ArrayList<ZhihuDailyItem> getDailyItems() {

@@ -1,18 +1,23 @@
 package com.tcl.openmind.data.zhihu;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Java Bean.
  */
 
 public class ZhihuDailyItem {
 
-
+    @SerializedName("images")
     private String[] images;
 
+    @SerializedName("type")
     private int type;
 
+    @SerializedName("id")
     private String id;
 
+    @SerializedName("title")
     private String title;
 
     private String date;

@@ -3,16 +3,16 @@
               android:id="@+id/zhihu_item_layout"
               android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/image_zhihu"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/text_zhihu"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
