@@ -24,6 +24,7 @@ import com.tcl.openmind.ui.fragment.NeteaseFragment;
 import com.tcl.openmind.ui.fragment.ZhihuFragment;
 import com.tcl.openmind.util.SharePreferenceUtil;
 
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

@@ -86,19 +86,20 @@ public class ZhihuAdapter extends BaseAdapter {
         else
             holder.textView.setTextColor(Color.BLACK);
 
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+//        holder.imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
 //                goDescribeActivity(holder,zhihuDailyItem);
-
-            }
-        });
+//
+//            }
+//        });
         holder.textView.setText(zhihuDailyItem.getTitle());
         holder.linearLayout.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-//                        goDescribeActivity(holder,zhihuDailyItem);
+
+                        goforDetails(holder,zhihuDailyItem);
                     }
                 });
 
@@ -144,6 +145,10 @@ public class ZhihuAdapter extends BaseAdapter {
 //                .centerCrop().override(widthPx, heighPx)
 //                .into(new DribbbleTarget(holder.imageView, false));
 
+    }
+
+    private void goforDetails(ZhihuViewHolder holder, ZhihuDailyItem zhihuDailyItem) {
+        // start a new Activity.
     }
 
 
