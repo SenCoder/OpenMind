@@ -1,10 +1,10 @@
 package com.tcl.openmind.presenter.imp;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.lidroid.xutils.util.LogUtils;
+import com.tcl.openmind.BuildConfig;
 import com.tcl.openmind.config.Config;
 import com.tcl.openmind.core.ApiManager;
 import com.tcl.openmind.data.zhihu.ZhihuDaily;
@@ -12,6 +12,8 @@ import com.tcl.openmind.data.zhihu.ZhihuDailyItem;
 import com.tcl.openmind.presenter.api.IZhihuPresenter;
 import com.tcl.openmind.ui.fragment.ZhihuFragment;
 import com.tcl.openmind.util.CacheUtil;
+
+import java.util.Arrays;
 
 import rx.Observer;
 import rx.Subscription;
@@ -42,11 +44,13 @@ public class ZhihuPresenter extends BasePresenter implements IZhihuPresenter {
                 .map(new Func1<ZhihuDaily, ZhihuDaily>() {
                     @Override
                     public ZhihuDaily call(ZhihuDaily zhihuDaily) {
-                        LogUtils.d("check getZhihuDaily = true");
+                        LogUtils.d(Thread.currentThread().getName());
                         String date = zhihuDaily.getDate();
-                        LogUtils.d("date = " + zhihuDaily.getDate());
                         for (ZhihuDailyItem item: zhihuDaily.getStories()) {
-                            LogUtils.d(" zhihu daily item: " + item.getTitle());
+                            if (BuildConfig.DEBUG) {
+                                LogUtils.d(" zhihu daily item: " + item.getTitle());
+                                LogUtils.d(" zhihu daily item: " + Arrays.toString(item.getImages()));
+                            }
                             item.setDate(date);
                         }
                         return zhihuDaily;
@@ -70,16 +74,20 @@ public class ZhihuPresenter extends BasePresenter implements IZhihuPresenter {
                     public void onNext(ZhihuDaily zhihuDaily) {
                         mFragment.hideProgressDialog();
                         mCacheUtil.put(Config.ZHIHU, mGson.toJson(zhihuDaily));
-                        LogUtils.d("loadMoreDate is to call");
-                        LogUtils.d("check zhihuDaily.date = " + zhihuDaily.getDate());
-
+                        if (BuildConfig.DEBUG) {
+                            LogUtils.d("loadMoreDate is to call");
+                            LogUtils.d("check zhihuDaily.date = " + zhihuDaily.getDate());
+                        }
                         mFragment.updateList(zhihuDaily);
                     }
                 });
     }
 
     public void getTheDaily(String currentLoadDate) {
-        LogUtils.d("check currentLoadDate is not null : " + (currentLoadDate != null));
+        if (BuildConfig.DEBUG && (currentLoadDate == null)) {
+            LogUtils.e("check currentLoadDate is not null fail");
+        }
+
         Subscription subscription = ApiManager.getInstance().getZhihuApi().getTheDaily(currentLoadDate)
                 .map(new Func1<ZhihuDaily, ZhihuDaily>() {
                     @Override
