@@ -43,14 +43,13 @@ public class ZhihuAdapter extends BaseAdapter {
     private static final int TYPE_LOADING_MORE = -1;
     private static final int NOMAL_ITEM = 1;
 
-    private Context mContext;
-
     private ArrayList<ZhihuDailyItem> mDailyItems = new ArrayList<>();
     private boolean showLoadingMore;
+    private Context mContext;
 
     public ZhihuAdapter(Context context) {
-        mContext = context;
         LogUtils.d("ZhihuAdapter construct");
+        mContext = context;
     }
 
     @Override

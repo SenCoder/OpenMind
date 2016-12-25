@@ -22,8 +22,10 @@ import android.widget.TextView;
 
 import com.lidroid.xutils.util.LogUtils;
 import com.tcl.openmind.R;
+import com.tcl.openmind.adapter.BaseAdapter;
 import com.tcl.openmind.adapter.ZhihuAdapter;
 import com.tcl.openmind.data.zhihu.ZhihuDaily;
+import com.tcl.openmind.presenter.imp.BasePresenter;
 import com.tcl.openmind.presenter.imp.ZhihuPresenter;
 
 import butterknife.ButterKnife;
@@ -34,22 +36,20 @@ import butterknife.ButterKnife;
 public class ZhihuFragment extends BaseFragment {
 
     private Context mContext;
-    private RecyclerView mRecyclerView;
     private ProgressBar mProgressBar;
 
     private TextView mNoConnectionText;
 
-    LinearLayoutManager mLayoutManager;
-
-    private boolean isNetworkAvailable;
-    private boolean mMonitoringConnectivity;
-    private boolean isLoading;
+    private ZhihuPresenter mPresenter;
+    private RecyclerView mRecyclerView;
 
     private ZhihuAdapter mAdapter;
-    private ZhihuPresenter mPresenter;
     private String mCurrentLoadDate = "0";
 
-    RecyclerView.OnScrollListener loadingMoreListener;
+
+    public ZhihuFragment() {
+        setContext(getActivity());
+    }
 
     @Nullable
     @Override
@@ -70,14 +70,13 @@ public class ZhihuFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initView();
         initListener();
+        initView();
 
-        if (isNetworkAvailable) {
+        if (isNetworkAvailable()) {
             LogUtils.d("check network available = true");
             loadDate();
         }
-
     }
 
     @Override
@@ -86,46 +85,6 @@ public class ZhihuFragment extends BaseFragment {
         ButterKnife.reset(this);
     }
 
-    private void initView() {
-
-        mLayoutManager = new LinearLayoutManager(mContext);
-
-        mAdapter = new ZhihuAdapter(mContext);
-        mPresenter = new ZhihuPresenter(mContext, this);
-
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addItemDecoration(
-                new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL)
-        );
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setAdapter(mAdapter);
-    }
-
-    private void initListener() {
-        loadingMoreListener = new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                if (dy > 0) {
-                    // move down
-                    int visibleItemCount = mLayoutManager.getChildCount();
-                    int totalItemCount = mLayoutManager.getItemCount();
-                    int pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
-                    if (!isLoading && (visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                        isLoading = true;
-                        loadMoreDate();
-                    }
-                }
-            }
-        };
-    }
 
     @Override
     public void showProgressDialog() {
@@ -141,10 +100,23 @@ public class ZhihuFragment extends BaseFragment {
         }
     }
 
+    public void initView() {
+
+        mAdapter = new ZhihuAdapter(mContext);
+        mPresenter = new ZhihuPresenter(mContext, this);
+
+        mRecyclerView.setLayoutManager(getLayoutManager());
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addItemDecoration(
+                new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL)
+        );
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
     @Override
-    protected void loadDate() {
-        super.loadDate();
-        LogUtils.d("check loadDate = true");
+    public void loadDate() {
+
         if (mAdapter.getItemCount() > 0) {
             mAdapter.clearData();
         }
@@ -152,21 +124,20 @@ public class ZhihuFragment extends BaseFragment {
         mPresenter.getLatestZhihuNews();
     }
 
-    private void loadMoreDate() {
+    @Override
+    public void loadMoreDate() {
         mAdapter.loadingStart();
-//        if (mCurrentLoadDate == null)
-//            mCurrentLoadDate = "0";
         mPresenter.getTheDaily(mCurrentLoadDate);
     }
 
     public void updateList(ZhihuDaily zhihuDaily) {
-        if (isLoading) {
-            isLoading = false;
+        if (isLoading()) {
+            setLoading(false);
             mAdapter.loadingEnd();
         }
-        LogUtils.d("zhihuDaily is not null : " + (zhihuDaily != null));
+        LogUtils.d("check zhihuDaily is not null : " + (zhihuDaily != null));
         mCurrentLoadDate = zhihuDaily.getDate();
-        LogUtils.d("zhihuDaily.date : " + (zhihuDaily.getDate() != null));
+        LogUtils.d("check zhihuDaily.date is not null: " + (zhihuDaily.getDate() != null));
         mAdapter.addItems(zhihuDaily.getStories());
 //        if the new data is not full of the screen, need load more data
         if (!mRecyclerView.canScrollVertically(View.SCROLL_INDICATOR_BOTTOM)) {
@@ -179,28 +150,18 @@ public class ZhihuFragment extends BaseFragment {
                 = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
-        isNetworkAvailable = activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        setNetworkAvailable(activeNetworkInfo != null && activeNetworkInfo.isConnected());
 
-        if (!isNetworkAvailable && mProgressBar != null) {//不判断容易抛出空指针异常
-            LogUtils.d("Network is OK");
-            mProgressBar.setVisibility(View.INVISIBLE);
+        if (!isNetworkAvailable()) {//不判断容易抛出空指针异常
+            LogUtils.d("Network is bad");
+            hideProgressDialog();
             if (mNoConnectionText == null) {
                 ViewStub stub_text = (ViewStub) view.findViewById(R.id.stub_no_connection_text);
                 mNoConnectionText = (TextView) stub_text.inflate();
             }
 
-            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
-                connectivityManager.registerNetworkCallback(
-                        new NetworkRequest.Builder()
-                                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET).build(),
-                        mConnectivityCallback);
-
-                mMonitoringConnectivity = true;
-            }
         }
     }
-
-    private ConnectivityManager.NetworkCallback mConnectivityCallback;
 
 
 }

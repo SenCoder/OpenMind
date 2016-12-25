@@ -28,4 +28,14 @@ public class LookFragment extends BaseFragment {
     public void hideProgressDialog() {
 
     }
+
+    @Override
+    public void loadDate() {
+
+    }
+
+    @Override
+    public void loadMoreDate() {
+
+    }
 }

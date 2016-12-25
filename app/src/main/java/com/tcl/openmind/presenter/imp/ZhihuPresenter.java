@@ -9,7 +9,7 @@ import com.tcl.openmind.config.Config;
 import com.tcl.openmind.core.ApiManager;
 import com.tcl.openmind.data.zhihu.ZhihuDaily;
 import com.tcl.openmind.data.zhihu.ZhihuDailyItem;
-import com.tcl.openmind.presenter.api.IZhihuPresenter;
+import com.tcl.openmind.presenter.api.IPresenter;
 import com.tcl.openmind.ui.fragment.ZhihuFragment;
 import com.tcl.openmind.util.CacheUtil;
 
@@ -25,7 +25,7 @@ import rx.schedulers.Schedulers;
  * Created by shengyuan on 16-12-19.
  */
 
-public class ZhihuPresenter extends BasePresenter implements IZhihuPresenter {
+public class ZhihuPresenter extends BasePresenter implements IPresenter {
 
     private ZhihuFragment mFragment;
     private CacheUtil mCacheUtil;
