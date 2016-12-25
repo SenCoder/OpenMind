@@ -70,7 +70,7 @@ public class ZhihuAdapter extends BaseAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        LogUtils.d("ZhihuAdapter#onBindViewHolder");
+
         int type = getItemViewType(position);
         switch (type) {
             case NOMAL_ITEM:
