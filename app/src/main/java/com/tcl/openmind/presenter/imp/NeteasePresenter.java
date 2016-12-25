@@ -3,6 +3,7 @@ package com.tcl.openmind.presenter.imp;
 import android.content.Context;
 
 import com.tcl.openmind.ui.fragment.BaseFragment;
+import com.tcl.openmind.ui.fragment.NeteaseFragment;
 
 /**
  * Created by shengyuan on 16-12-19.
@@ -10,7 +11,9 @@ import com.tcl.openmind.ui.fragment.BaseFragment;
 
 public class NeteasePresenter extends BasePresenter {
 
-    public NeteasePresenter(Context context, BaseFragment fragment) {
+
+
+    public NeteasePresenter(NeteaseFragment fragment) {
 
     }
 }

@@ -25,31 +25,43 @@ public class ApiManager {
     }
 
     private static ApiManager instance;
+    private static OkHttpClient sClient = new OkHttpClient.Builder().build();
 
     private ZhihuApi mZhihuApi;
+    private NeteaseApi mNeteaseApi;
 
     // I was wondering why this object is needed.
-    private Object zhihuMonitor = new Object();
+    private Object monitor = new Object();
 
 
     public ZhihuApi getZhihuApi() {
 
-        OkHttpClient client = new OkHttpClient.Builder().build();
-
-        if (mZhihuApi == null) {
-            synchronized (zhihuMonitor) {
-                if (mZhihuApi == null) {
-                    mZhihuApi = new Retrofit.Builder()
-                            .baseUrl("http://news-at.zhihu.com")
-                            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                            .client(client)
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .build().create(ZhihuApi.class);
-                }
+        synchronized (monitor) {
+            if (mZhihuApi == null) {
+                mZhihuApi = new Retrofit.Builder()
+                        .baseUrl("http://news-at.zhihu.com")
+                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                        .client(sClient)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build().create(ZhihuApi.class);
             }
         }
         LogUtils.d("check zhihuApi implement = true");
         return mZhihuApi;
     }
+
+    public NeteaseApi getNeteaseApi() {
+        synchronized (monitor) {
+            if (mNeteaseApi == null) {
+                mNeteaseApi = new Retrofit.Builder().baseUrl("http://c.m.163.com")
+                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                        .client(sClient)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build().create(NeteaseApi.class);
+            }
+        }
+        return mNeteaseApi;
+    }
+
 }
 
