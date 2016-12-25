@@ -6,7 +6,9 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -23,6 +26,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.lidroid.xutils.util.LogUtils;
+import com.squareup.picasso.Picasso;
 import com.tcl.openmind.R;
 import com.tcl.openmind.config.Config;
 import com.tcl.openmind.data.zhihu.ZhihuDailyItem;
@@ -103,52 +107,14 @@ public class ZhihuAdapter extends BaseAdapter {
                     }
                 });
 
-
-//        Glide.with(mContext)
-//                .load(mDailyItems.get(position).getImages()[0])
-//                .listener(new RequestListener<String, GlideDrawable>() {
-//                    @Override
-//                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-//                        return false;
-//                    }
-
-//                    @Override
-//                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-//                        if (!zhihuDailyItem.hasFadedIn) {
-//                            holder.imageView.setHasTransientState(true);
-//                            final ObservableColorMatrix cm = new ObservableColorMatrix();
-//                            final ObjectAnimator animator = ObjectAnimator.ofFloat(cm, ObservableColorMatrix.SATURATION, 0f, 1f);
-//                            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//                                @Override
-//                                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-//                                    holder.imageView.setColorFilter(new ColorMatrixColorFilter(cm));
-//                                }
-//                            });
-//                            animator.setDuration(2000L);
-//                            animator.setInterpolator(new AccelerateInterpolator());
-//                            animator.addListener(new AnimatorListenerAdapter() {
-//                                @Override
-//                                public void onAnimationEnd(Animator animation) {
-//                                    super.onAnimationEnd(animation);
-//                                    holder.imageView.clearColorFilter();
-//                                    holder.imageView.setHasTransientState(false);
-//                                    animator.start();
-//                                    zhihuDailyItem.hasFadedIn = true;
-//
-//                                }
-//                            });
-//                        }
-//
-//                        return false;
-//                    }
-//                }).diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                .centerCrop().override(widthPx, heighPx)
-//                .into(new DribbbleTarget(holder.imageView, false));
+        // todo: load picture from url in zhiHuDailyItem
+        Picasso.with(mContext).load(zhihuDailyItem.getImages()[0]).resize(128, 128 * 3/4).centerCrop().into(holder.imageView);
 
     }
 
     private void goforDetails(ZhihuViewHolder holder, ZhihuDailyItem zhihuDailyItem) {
         // start a new Activity.
+        Toast.makeText(mContext, "goforDetails", Toast.LENGTH_SHORT).show();
     }
 
 

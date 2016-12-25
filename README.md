@@ -1,0 +1,1 @@
+# OpenMind is a demo app for news.
