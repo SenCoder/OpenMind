@@ -13,7 +13,7 @@ import rx.Observable;
 
 public interface NeteaseApi {
 
-    @GET("http://c.m.163.com/nc/article/headline/T11348647909107/{id}-20.html")
+    @GET("/nc/article/headline/T1348647909107/{id}-20.html")
     Observable<NewsListBean> getNews(@Path("id") int id);
 
     @GET("http://c.m.163.com/nc/article/{id}/full.html")

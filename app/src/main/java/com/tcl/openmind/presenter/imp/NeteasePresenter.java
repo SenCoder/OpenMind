@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.lidroid.xutils.util.LogUtils;
 import com.tcl.openmind.core.ApiManager;
+import com.tcl.openmind.data.netease.NeteaseNews;
 import com.tcl.openmind.data.netease.NewsListBean;
 import com.tcl.openmind.ui.fragment.BaseFragment;
 import com.tcl.openmind.ui.fragment.NeteaseFragment;
@@ -22,7 +23,7 @@ public class NeteasePresenter extends BasePresenter {
     private NeteaseFragment mFragment;
 
     public NeteasePresenter(NeteaseFragment fragment) {
-
+        mFragment = fragment;
     }
 
     public void getNewsList(int t) {
@@ -38,7 +39,6 @@ public class NeteasePresenter extends BasePresenter {
 
                     @Override
                     public void onError(Throwable e) {
-
                         mFragment.hideProgressDialog();
                         LogUtils.e(e.toString());
                     }
@@ -46,8 +46,13 @@ public class NeteasePresenter extends BasePresenter {
                     @Override
                     public void onNext(NewsListBean newsList) {
                         mFragment.hideProgressDialog();
-//                        mFragment.upda(newsList);
+                        LogUtils.d("check newsList is not null: " + (newsList != null));
 
+                        for (NeteaseNews item: newsList.getNewsList()) {
+                            LogUtils.d(item.getTitle());
+                            LogUtils.d(item.getImgsrc());
+                        }
+                        mFragment.updateList(newsList);
                     }
                 });
         addSubscription(subscription);

@@ -81,6 +81,7 @@ public class ZhihuPresenter extends BasePresenter implements IPresenter {
                         mFragment.updateList(zhihuDaily);
                     }
                 });
+        addSubscription(subscription);
     }
 
     public void getTheDaily(String currentLoadDate) {

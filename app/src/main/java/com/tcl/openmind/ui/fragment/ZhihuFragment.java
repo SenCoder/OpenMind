@@ -2,17 +2,12 @@ package com.tcl.openmind.ui.fragment;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
-import android.net.NetworkRequest;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +17,8 @@ import android.widget.TextView;
 
 import com.lidroid.xutils.util.LogUtils;
 import com.tcl.openmind.R;
-import com.tcl.openmind.adapter.BaseAdapter;
 import com.tcl.openmind.adapter.ZhihuAdapter;
 import com.tcl.openmind.data.zhihu.ZhihuDaily;
-import com.tcl.openmind.presenter.imp.BasePresenter;
 import com.tcl.openmind.presenter.imp.ZhihuPresenter;
 
 import butterknife.ButterKnife;
@@ -61,7 +54,7 @@ public class ZhihuFragment extends BaseFragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycle_zhihu);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
 
-        checkConnectivity(view);
+        checkNetwork(view);
         ButterKnife.inject(this, view);
         return view;
     }
@@ -145,7 +138,7 @@ public class ZhihuFragment extends BaseFragment {
         }
     }
 
-    private void checkConnectivity(View view) {
+    private void checkNetwork(View view) {
         final ConnectivityManager connectivityManager
                 = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();

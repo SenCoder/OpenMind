@@ -10,7 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.lidroid.xutils.util.LogUtils;
 import com.squareup.picasso.Picasso;
+import com.tcl.openmind.BuildConfig;
 import com.tcl.openmind.R;
 import com.tcl.openmind.adapter.api.IDataLoader;
 import com.tcl.openmind.config.Config;
@@ -38,12 +40,14 @@ public class NeteaseAdapter extends BaseAdapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
+        LogUtils.d("onCreateViewHolder");
         switch (viewType) {
             case NOMAL_ITEM:
+                LogUtils.d("NeteaseViewHolder create");
                 return new NeteaseViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_netease, parent, false));
             case TYPE_LOADING_MORE:
-                return new NeteaseViewHolder(LayoutInflater.from(mContext).inflate(R.layout.infinite_loading, parent, false));
+                LogUtils.d("LoadingMoreHolder create");
+                return new LoadingMoreHolder(LayoutInflater.from(mContext).inflate(R.layout.infinite_loading, parent, false));
         }
         return null;
     }
@@ -59,6 +63,14 @@ public class NeteaseAdapter extends BaseAdapter {
             bindLoadingViewHolder((LoadingMoreHolder) holder);
             break;
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position < getItemCount() && getItemCount() > 0) {
+            return  NOMAL_ITEM;
+        }
+        return TYPE_LOADING_MORE;
     }
 
     private void bindViewHolderNormal(final NeteaseViewHolder holder) {
@@ -88,7 +100,6 @@ public class NeteaseAdapter extends BaseAdapter {
                 load(newsItem.getImgsrc())
                 .resize(128, 128 * 3/4)
                 .centerCrop().into(holder.imageView);
-
     }
 
     private void bindLoadingViewHolder(LoadingMoreHolder holder) {
@@ -124,6 +135,15 @@ public class NeteaseAdapter extends BaseAdapter {
         notifyItemRemoved(getLoadingMoreItemPosition());
     }
 
+    public void addItems(ArrayList<NeteaseNews> newsList) {
+        if (mNewsList != null) {
+//            mNewsList.remove(0);
+            mNewsList.addAll(newsList);
+            LogUtils.i("add new items and notifyDataSetChanged");
+            notifyDataSetChanged();
+        }
+    }
+
     class LoadingMoreHolder extends RecyclerView.ViewHolder {
         ProgressBar progressBar;
 
@@ -145,6 +165,12 @@ public class NeteaseAdapter extends BaseAdapter {
             textView = (TextView) itemView.findViewById(R.id.text_netease);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.netease_item_layout);
             sourceTextview= (TextView) itemView.findViewById(R.id.text_netease_source);
+//            if (BuildConfig.DEBUG) {
+                LogUtils.d("check imageView is null :" + (imageView == null));
+                LogUtils.d("check textView is null :" + (textView == null));
+                LogUtils.d("check linearLayout is null :" + (linearLayout == null));
+                LogUtils.d("check sourceTextview is null :" + (sourceTextview == null));
+//            }
         }
     }
 }
