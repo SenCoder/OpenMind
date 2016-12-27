@@ -3,4 +3,26 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <com.tcl.openmind.ui.widget.FourThreeImageView
+        android:id="@+id/image_netease"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text_netease"
+        android:layout_width="0dp"
+        android:layout_weight="4"
+        android:textSize="18sp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_normal"/>
+
+    <TextView
+        android:id="@+id/text_netease_source"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="2dp"/>
+
 </LinearLayout>
