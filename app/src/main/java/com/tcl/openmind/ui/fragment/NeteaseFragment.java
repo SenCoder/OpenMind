@@ -19,6 +19,7 @@ import com.tcl.openmind.adapter.ZhihuAdapter;
 import com.tcl.openmind.presenter.imp.NeteasePresenter;
 import com.tcl.openmind.presenter.imp.ZhihuPresenter;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
@@ -45,6 +46,8 @@ public class NeteaseFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fm_netease, container, false);
+        mContext = getContext();
+        ButterKnife.inject(this, view);
 
         return view;
     }
@@ -62,8 +65,15 @@ public class NeteaseFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mPresenter.unSubscribe();
+        ButterKnife.reset(this);
+    }
+
     private void initView() {
-        mAdapter = new NeteaseAdapter();
+        mAdapter = new NeteaseAdapter(mContext);
         mPresenter = new NeteasePresenter(this);
 
         mRecyclerView.setLayoutManager(getLayoutManager());
@@ -96,15 +106,15 @@ public class NeteaseFragment extends BaseFragment {
             mAdapter.clearData();
         }
         currentIndex = 0;
-//        mAdapter.getNewsList(currentIndex);
+        mPresenter.getNewsList(currentIndex);
     }
 
     @Override
     public void loadMoreDate() {
         // request 20 more news each time.
         mAdapter.loadingStart();
-        currentIndex+=20;
-//        mAdapter.getNewsList(currentIndex);
+        currentIndex += 20;
+        mPresenter.getNewsList(currentIndex);
     }
 
 }

@@ -40,9 +40,6 @@ import java.util.ArrayList;
 
 public class ZhihuAdapter extends BaseAdapter {
 
-    private static final int TYPE_LOADING_MORE = -1;
-    private static final int NOMAL_ITEM = 1;
-
     private ArrayList<ZhihuDailyItem> mDailyItems = new ArrayList<>();
     private boolean showLoadingMore;
     private Context mContext;
@@ -106,8 +103,10 @@ public class ZhihuAdapter extends BaseAdapter {
                     }
                 });
 
-        // todo: load picture from url in zhiHuDailyItem
-        Picasso.with(mContext).load(zhihuDailyItem.getImages()[0]).resize(128, 128 * 3/4).centerCrop().into(holder.imageView);
+        Picasso.with(mContext).
+                load(zhihuDailyItem.getImages()[0])
+                .resize(128, 128 * 3/4)
+                .centerCrop().into(holder.imageView);
 
     }
 

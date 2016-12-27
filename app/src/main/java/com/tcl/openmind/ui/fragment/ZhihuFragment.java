@@ -159,9 +159,7 @@ public class ZhihuFragment extends BaseFragment {
                 ViewStub stub_text = (ViewStub) view.findViewById(R.id.stub_no_connection_text);
                 mNoConnectionText = (TextView) stub_text.inflate();
             }
-
         }
     }
-
 
 }

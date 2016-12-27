@@ -6,7 +6,8 @@ package com.tcl.openmind.adapter.api;
 
 public interface IDataLoader {
 
-    
+    int TYPE_LOADING_MORE = -1;
+    int NOMAL_ITEM = 1;
     
     void clearData();
 

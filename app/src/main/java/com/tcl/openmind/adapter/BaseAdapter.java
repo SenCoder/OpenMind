@@ -12,6 +12,8 @@ import com.tcl.openmind.adapter.api.IDataLoader;
 
 public class BaseAdapter extends RecyclerView.Adapter implements IDataLoader {
 
+
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return null;
