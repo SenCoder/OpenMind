@@ -75,7 +75,6 @@ public class ZhihuPresenter extends BasePresenter implements IPresenter {
                         mFragment.hideProgressDialog();
                         mCacheUtil.put(Config.ZHIHU, mGson.toJson(zhihuDaily));
                         if (BuildConfig.DEBUG) {
-                            LogUtils.d("loadMoreDate is to call");
                             LogUtils.d("check zhihuDaily.date = " + zhihuDaily.getDate());
                         }
                         mFragment.updateList(zhihuDaily);

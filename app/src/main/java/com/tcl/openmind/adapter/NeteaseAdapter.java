@@ -165,12 +165,6 @@ public class NeteaseAdapter extends BaseAdapter {
             textView = (TextView) itemView.findViewById(R.id.text_netease);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.netease_item_layout);
             sourceTextview= (TextView) itemView.findViewById(R.id.text_netease_source);
-//            if (BuildConfig.DEBUG) {
-                LogUtils.d("check imageView is null :" + (imageView == null));
-                LogUtils.d("check textView is null :" + (textView == null));
-                LogUtils.d("check linearLayout is null :" + (linearLayout == null));
-                LogUtils.d("check sourceTextview is null :" + (sourceTextview == null));
-//            }
         }
     }
 }

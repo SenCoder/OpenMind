@@ -128,9 +128,7 @@ public class ZhihuFragment extends BaseFragment {
             setLoading(false);
             mAdapter.loadingEnd();
         }
-        LogUtils.d("check zhihuDaily is not null : " + (zhihuDaily != null));
         mCurrentLoadDate = zhihuDaily.getDate();
-        LogUtils.d("check zhihuDaily.date is not null: " + (zhihuDaily.getDate() != null));
         mAdapter.addItems(zhihuDaily.getStories());
 //        if the new data is not full of the screen, need load more data
         if (!mRecyclerView.canScrollVertically(View.SCROLL_INDICATOR_BOTTOM)) {

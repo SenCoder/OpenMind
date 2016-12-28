@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 /**
- * Created by yuansheng on 24/12/2016.
+ * This class can be replaced by imageView after we use picasso library.
  */
 
 public class FourThreeImageView extends ImageView {
