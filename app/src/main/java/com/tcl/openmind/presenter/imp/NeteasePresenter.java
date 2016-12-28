@@ -1,12 +1,9 @@
 package com.tcl.openmind.presenter.imp;
 
-import android.content.Context;
-
 import com.lidroid.xutils.util.LogUtils;
 import com.tcl.openmind.core.ApiManager;
 import com.tcl.openmind.data.netease.NeteaseNews;
 import com.tcl.openmind.data.netease.NewsListBean;
-import com.tcl.openmind.ui.fragment.BaseFragment;
 import com.tcl.openmind.ui.fragment.NeteaseFragment;
 
 import rx.Observer;
@@ -26,9 +23,9 @@ public class NeteasePresenter extends BasePresenter {
         mFragment = fragment;
     }
 
-    public void getNewsList(int t) {
+    public void getNewsList(int index) {
         mFragment.showProgressDialog();
-        Subscription subscription= ApiManager.getInstance().getNeteaseApi().getNews(t)
+        Subscription subscription= ApiManager.getInstance().getNeteaseApi().getNews(index)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<NewsListBean>() {

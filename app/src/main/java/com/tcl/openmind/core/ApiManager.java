@@ -29,10 +29,10 @@ public class ApiManager {
 
     private ZhihuApi mZhihuApi;
     private NeteaseApi mNeteaseApi;
+    private GankApi mGankApi;
 
-    // I was wondering why this object is needed.
+    // I was wondering why this object is really needed.
     private Object monitor = new Object();
-
 
     public ZhihuApi getZhihuApi() {
 
@@ -61,6 +61,19 @@ public class ApiManager {
             }
         }
         return mNeteaseApi;
+    }
+
+    public GankApi getGankApi() {
+        synchronized (monitor) {
+            if (mGankApi == null) {
+                mGankApi = new Retrofit.Builder().baseUrl("http://gank.io")
+                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                        .client(sClient)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build().create(GankApi.class);
+            }
+        }
+        return mGankApi;
     }
 
 }
