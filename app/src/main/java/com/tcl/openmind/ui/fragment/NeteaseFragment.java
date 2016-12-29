@@ -83,6 +83,7 @@ public class NeteaseFragment extends BaseFragment {
         mPresenter = new NeteasePresenter(this);
 
         mRecyclerView.setLayoutManager(getLayoutManager());
+        // if you are sure that every item gain the same space, it is better to use setHasFixedSize.
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(
                 new DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL)

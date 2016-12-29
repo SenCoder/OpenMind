@@ -166,7 +166,7 @@ public class ZhihuAdapter extends BaseAdapter {
         return TYPE_LOADING_MORE;
     }
 
-    class LoadingMoreHolder extends RecyclerView.ViewHolder {
+    static class LoadingMoreHolder extends RecyclerView.ViewHolder {
         ProgressBar progressBar;
 
         public LoadingMoreHolder(View itemView) {
@@ -175,7 +175,7 @@ public class ZhihuAdapter extends BaseAdapter {
         }
     }
 
-    class ZhihuViewHolder extends RecyclerView.ViewHolder {
+    static class ZhihuViewHolder extends RecyclerView.ViewHolder {
         final TextView textView;
         final LinearLayout linearLayout;
         ImageView imageView;

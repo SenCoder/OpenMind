@@ -144,7 +144,7 @@ public class NeteaseAdapter extends BaseAdapter {
         }
     }
 
-    class LoadingMoreHolder extends RecyclerView.ViewHolder {
+    static class LoadingMoreHolder extends RecyclerView.ViewHolder {
         ProgressBar progressBar;
 
         public LoadingMoreHolder(View itemView) {
@@ -153,7 +153,7 @@ public class NeteaseAdapter extends BaseAdapter {
         }
     }
 
-    class NeteaseViewHolder extends RecyclerView.ViewHolder {
+    static class NeteaseViewHolder extends RecyclerView.ViewHolder {
         final TextView textView;
         final LinearLayout linearLayout;
         final TextView sourceTextview;
