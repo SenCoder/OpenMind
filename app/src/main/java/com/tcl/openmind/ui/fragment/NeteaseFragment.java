@@ -42,8 +42,8 @@ public class NeteaseFragment extends BaseFragment {
     @InjectView(R.id.recycle_netease)
     protected RecyclerView mRecyclerView;
     
-    @InjectView(R.id.progress)
-    protected ProgressBar mProgressBar;
+//    @InjectView(R.id.progress)
+//    protected ProgressBar mProgressBar;
 
     private Context mContext;
 
@@ -53,6 +53,7 @@ public class NeteaseFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fm_netease, container, false);
         mContext = getActivity();
         ButterKnife.inject(this, view);
+        mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
 
         return view;
     }
@@ -93,19 +94,19 @@ public class NeteaseFragment extends BaseFragment {
     }
 
 
-    @Override
-    public void showProgressDialog() {
-        if (mProgressBar != null) {
-            mProgressBar.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void hideProgressDialog() {
-        if (mProgressBar != null) {
-            mProgressBar.setVisibility(View.INVISIBLE);
-        }
-    }
+//    @Override
+//    public void showProgressDialog() {
+//        if (mProgressBar != null) {
+//            mProgressBar.setVisibility(View.VISIBLE);
+//        }
+//    }
+//
+//    @Override
+//    public void hideProgressDialog() {
+//        if (mProgressBar != null) {
+//            mProgressBar.setVisibility(View.INVISIBLE);
+//        }
+//    }
 
     @Override
     public void loadDate() {
@@ -129,25 +130,25 @@ public class NeteaseFragment extends BaseFragment {
             setLoading(false);
             mAdapter.loadingEnd();
         }
-        hideProgressDialog();
+        hideProgressBar();
         mAdapter.addItems(newsListBean.getNewsList());
     }
 
-    private void checkNetwork() {
-        final ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        final NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-
-        setNetworkAvailable(activeNetworkInfo != null && activeNetworkInfo.isConnected());
-
-        if (!isNetworkAvailable()) {//不判断容易抛出空指针异常
-            LogUtils.d("Network is bad");
-            hideProgressDialog();
-//            if (mNoConnectionText == null) {
-//                ViewStub stub_text = (ViewStub) view.findViewById(R.id.stub_no_connection_text);
-//                mNoConnectionText = (TextView) stub_text.inflate();
-//            }
-        }
-    }
+//    private void checkNetwork() {
+//        final ConnectivityManager connectivityManager
+//                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+//        final NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+//
+//        setNetworkAvailable(activeNetworkInfo != null && activeNetworkInfo.isConnected());
+//
+//        if (!isNetworkAvailable()) {//不判断容易抛出空指针异常
+//            LogUtils.d("Network is bad");
+//            hideProgressDialog();
+////            if (mNoConnectionText == null) {
+////                ViewStub stub_text = (ViewStub) view.findViewById(R.id.stub_no_connection_text);
+////                mNoConnectionText = (TextView) stub_text.inflate();
+////            }
+//        }
+//    }
 
 }

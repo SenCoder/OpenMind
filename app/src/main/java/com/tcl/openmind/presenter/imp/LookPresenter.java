@@ -29,9 +29,9 @@ public class LookPresenter extends BasePresenter {
         mFragment = fragment;
     }
 
-    public void getGankDataByDate() {
+    public void loadAndroidData() {
 
-        mFragment.showProgressDialog();
+        mFragment.showProgressBar();
         Subscription subscription = ApiManager.getInstance().getGankApi()
                 .getAndroidPages("10", "1")
                 .subscribeOn(Schedulers.io())
@@ -44,7 +44,7 @@ public class LookPresenter extends BasePresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        mFragment.hideProgressDialog();
+                        mFragment.hideProgressBar();
                         LogUtils.e(e.getMessage());
                     }
 

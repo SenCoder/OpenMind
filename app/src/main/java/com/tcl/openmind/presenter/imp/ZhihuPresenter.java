@@ -39,7 +39,7 @@ public class ZhihuPresenter extends BasePresenter implements IPresenter {
 
     public void getLatestZhihuNews() {
         LogUtils.d("check getLatestZhihuNews = true");
-        mFragment.showProgressDialog();
+        mFragment.showProgressBar();
         Subscription subscription = ApiManager.getInstance().getZhihuApi().getLatestDaily()
                 .map(new Func1<ZhihuDaily, ZhihuDaily>() {
                     @Override
@@ -65,14 +65,14 @@ public class ZhihuPresenter extends BasePresenter implements IPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        mFragment.hideProgressDialog();
+                        mFragment.hideProgressBar();
                         LogUtils.e(e.toString());
                         LogUtils.e(e.getMessage());
                     }
 
                     @Override
                     public void onNext(ZhihuDaily zhihuDaily) {
-                        mFragment.hideProgressDialog();
+                        mFragment.hideProgressBar();
                         mCacheUtil.put(Config.ZHIHU, mGson.toJson(zhihuDaily));
                         if (BuildConfig.DEBUG) {
                             LogUtils.d("check zhihuDaily.date = " + zhihuDaily.getDate());
@@ -109,13 +109,13 @@ public class ZhihuPresenter extends BasePresenter implements IPresenter {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        mFragment.hideProgressDialog();
+                        mFragment.hideProgressBar();
                         LogUtils.e(e.getMessage());
                     }
 
                     @Override
                     public void onNext(ZhihuDaily zhihuDaily) {
-                        mFragment.hideProgressDialog();
+                        mFragment.hideProgressBar();
                         LogUtils.d("getTheDaily onNext callback");
                         mFragment.updateList(zhihuDaily);
                     }

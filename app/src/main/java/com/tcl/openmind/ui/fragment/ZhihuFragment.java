@@ -22,6 +22,7 @@ import com.tcl.openmind.data.zhihu.ZhihuDaily;
 import com.tcl.openmind.presenter.imp.ZhihuPresenter;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * Created by shengyuan on 16-12-19.
@@ -29,12 +30,13 @@ import butterknife.ButterKnife;
 public class ZhihuFragment extends BaseFragment {
 
     private Context mContext;
-    private ProgressBar mProgressBar;
 
     private TextView mNoConnectionText;
 
     private ZhihuPresenter mPresenter;
-    private RecyclerView mRecyclerView;
+
+    @InjectView(R.id.recycle_zhihu)
+    protected RecyclerView mRecyclerView;
 
     private ZhihuAdapter mAdapter;
     private String mCurrentLoadDate = "0";
@@ -51,11 +53,11 @@ public class ZhihuFragment extends BaseFragment {
         setRetainInstance(true);
         mContext = getActivity();
         View view = inflater.inflate(R.layout.fm_zhihu, container, false);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycle_zhihu);
+        ButterKnife.inject(this, view);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
 
-        checkNetwork(view);
-        ButterKnife.inject(this, view);
+        checkNetwork();
+
         return view;
     }
 
@@ -76,22 +78,23 @@ public class ZhihuFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+        mPresenter.unSubscribe();
     }
 
 
-    @Override
-    public void showProgressDialog() {
-        if (mProgressBar != null) {
-            mProgressBar.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Override
-    public void hideProgressDialog() {
-        if (mProgressBar != null) {
-            mProgressBar.setVisibility(View.INVISIBLE);
-        }
-    }
+//    @Override
+//    public void showProgressDialog() {
+//        if (mProgressBar != null) {
+//            mProgressBar.setVisibility(View.VISIBLE);
+//        }
+//    }
+//
+//    @Override
+//    public void hideProgressDialog() {
+//        if (mProgressBar != null) {
+//            mProgressBar.setVisibility(View.INVISIBLE);
+//        }
+//    }
 
     public void initView() {
 
@@ -136,21 +139,21 @@ public class ZhihuFragment extends BaseFragment {
         }
     }
 
-    private void checkNetwork(View view) {
-        final ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        final NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-
-        setNetworkAvailable(activeNetworkInfo != null && activeNetworkInfo.isConnected());
-
-        if (!isNetworkAvailable()) {//不判断容易抛出空指针异常
-            LogUtils.d("Network is bad");
-            hideProgressDialog();
-            if (mNoConnectionText == null) {
-                ViewStub stub_text = (ViewStub) view.findViewById(R.id.stub_no_connection_text);
-                mNoConnectionText = (TextView) stub_text.inflate();
-            }
-        }
-    }
+//    private void checkNetwork(View view) {
+//        final ConnectivityManager connectivityManager
+//                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+//        final NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+//
+//        setNetworkAvailable(activeNetworkInfo != null && activeNetworkInfo.isConnected());
+//
+//        if (!isNetworkAvailable()) {//不判断容易抛出空指针异常
+//            LogUtils.d("Network is bad");
+//            hideProgressDialog();
+//            if (mNoConnectionText == null) {
+//                ViewStub stub_text = (ViewStub) view.findViewById(R.id.stub_no_connection_text);
+//                mNoConnectionText = (TextView) stub_text.inflate();
+//            }
+//        }
+//    }
 
 }

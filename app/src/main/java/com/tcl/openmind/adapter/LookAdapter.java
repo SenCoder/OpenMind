@@ -5,6 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.tcl.openmind.adapter.api.IDataLoader;
+import com.tcl.openmind.data.gank.PageData;
+
+import java.util.ArrayList;
 
 /**
  * Created by shengyuan on 16-12-19.
@@ -12,6 +15,14 @@ import com.tcl.openmind.adapter.api.IDataLoader;
 
 public class LookAdapter extends BaseAdapter {
 
+    private ArrayList<PageData.AndroidBean> mPages;
+
+    private Context mContext;
+
+    public LookAdapter(Context context
+    ) {
+        mContext = context;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

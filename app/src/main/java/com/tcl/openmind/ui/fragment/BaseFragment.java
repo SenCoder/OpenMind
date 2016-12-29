@@ -1,10 +1,15 @@
 package com.tcl.openmind.ui.fragment;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 
+import com.lidroid.xutils.util.LogUtils;
 import com.tcl.openmind.adapter.BaseAdapter;
 
 
@@ -18,6 +23,8 @@ public abstract class BaseFragment extends Fragment {
     private boolean isLoading;
     private Context mContext;
     private LinearLayoutManager mLayoutManager;
+
+    protected ProgressBar mProgressBar;
 
     RecyclerView.OnScrollListener loadingMoreListener;
 
@@ -73,9 +80,29 @@ public abstract class BaseFragment extends Fragment {
         };
     }
 
-    public abstract void showProgressDialog();
+    protected void checkNetwork() {
+        final ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        final NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 
-    public abstract void hideProgressDialog();
+        setNetworkAvailable(activeNetworkInfo != null && activeNetworkInfo.isConnected());
+
+        if (!isNetworkAvailable()) {//不判断容易抛出空指针异常
+            LogUtils.d("Network is bad");
+        }
+    }
+
+    public void hideProgressBar() {
+        if (mProgressBar != null) {
+            mProgressBar.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void showProgressBar() {
+        if (mProgressBar != null) {
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+    }
 
     public abstract void loadDate();
 

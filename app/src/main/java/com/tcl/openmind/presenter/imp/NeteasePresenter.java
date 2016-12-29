@@ -24,7 +24,7 @@ public class NeteasePresenter extends BasePresenter {
     }
 
     public void getNewsList(int index) {
-        mFragment.showProgressDialog();
+        mFragment.showProgressBar();
         Subscription subscription= ApiManager.getInstance().getNeteaseApi().getNews(index)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -36,13 +36,13 @@ public class NeteasePresenter extends BasePresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        mFragment.hideProgressDialog();
+                        mFragment.hideProgressBar();
                         LogUtils.e(e.toString());
                     }
 
                     @Override
                     public void onNext(NewsListBean newsList) {
-                        mFragment.hideProgressDialog();
+                        mFragment.hideProgressBar();
                         LogUtils.d("check newsList is not null: " + (newsList != null));
 
                         for (NeteaseNews item: newsList.getNewsList()) {
