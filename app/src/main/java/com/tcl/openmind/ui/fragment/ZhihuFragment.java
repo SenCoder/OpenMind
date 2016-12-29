@@ -1,8 +1,6 @@
 package com.tcl.openmind.ui.fragment;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -54,7 +51,6 @@ public class ZhihuFragment extends BaseFragment {
         mContext = getActivity();
         View view = inflater.inflate(R.layout.fm_zhihu, container, false);
         ButterKnife.inject(this, view);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
 
         checkNetwork();
 
@@ -68,9 +64,9 @@ public class ZhihuFragment extends BaseFragment {
         initListener();
         initView();
 
-        if (isNetworkAvailable()) {
+        if (checkNetwork()) {
             LogUtils.d("check network available = true");
-            loadDate();
+            loadData();
         }
     }
 
@@ -81,21 +77,7 @@ public class ZhihuFragment extends BaseFragment {
         mPresenter.unSubscribe();
     }
 
-
-//    @Override
-//    public void showProgressDialog() {
-//        if (mProgressBar != null) {
-//            mProgressBar.setVisibility(View.VISIBLE);
-//        }
-//    }
-//
-//    @Override
-//    public void hideProgressDialog() {
-//        if (mProgressBar != null) {
-//            mProgressBar.setVisibility(View.INVISIBLE);
-//        }
-//    }
-
+    @Override
     public void initView() {
 
         mAdapter = new ZhihuAdapter(mContext);
@@ -111,7 +93,7 @@ public class ZhihuFragment extends BaseFragment {
     }
 
     @Override
-    public void loadDate() {
+    public void loadData() {
 
         if (mAdapter.getItemCount() > 0) {
             mAdapter.clearData();
@@ -121,7 +103,7 @@ public class ZhihuFragment extends BaseFragment {
     }
 
     @Override
-    public void loadMoreDate() {
+    public void loadMoreData() {
         mAdapter.loadingStart();
         mPresenter.getTheDaily(mCurrentLoadDate);
     }
@@ -135,25 +117,8 @@ public class ZhihuFragment extends BaseFragment {
         mAdapter.addItems(zhihuDaily.getStories());
 //        if the new data is not full of the screen, need load more data
         if (!mRecyclerView.canScrollVertically(View.SCROLL_INDICATOR_BOTTOM)) {
-            loadMoreDate();
+            loadMoreData();
         }
     }
-
-//    private void checkNetwork(View view) {
-//        final ConnectivityManager connectivityManager
-//                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-//        final NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-//
-//        setNetworkAvailable(activeNetworkInfo != null && activeNetworkInfo.isConnected());
-//
-//        if (!isNetworkAvailable()) {//不判断容易抛出空指针异常
-//            LogUtils.d("Network is bad");
-//            hideProgressDialog();
-//            if (mNoConnectionText == null) {
-//                ViewStub stub_text = (ViewStub) view.findViewById(R.id.stub_no_connection_text);
-//                mNoConnectionText = (TextView) stub_text.inflate();
-//            }
-//        }
-//    }
 
 }

@@ -38,7 +38,7 @@ public class ZhihuPresenter extends BasePresenter implements IPresenter {
     }
 
     public void getLatestZhihuNews() {
-        LogUtils.d("check getLatestZhihuNews = true");
+
         mFragment.showProgressBar();
         Subscription subscription = ApiManager.getInstance().getZhihuApi().getLatestDaily()
                 .map(new Func1<ZhihuDaily, ZhihuDaily>() {

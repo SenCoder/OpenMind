@@ -12,8 +12,6 @@ import com.tcl.openmind.adapter.api.IDataLoader;
 
 public class BaseAdapter extends RecyclerView.Adapter implements IDataLoader {
 
-
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return null;
@@ -43,4 +41,13 @@ public class BaseAdapter extends RecyclerView.Adapter implements IDataLoader {
     public void loadingEnd() {
 
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position < getItemCount() && getItemCount() > 0) {
+            return  NOMAL_ITEM;
+        }
+        return TYPE_LOADING_MORE;
+    }
+
 }

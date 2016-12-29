@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.lidroid.xutils.util.LogUtils;
-import com.tcl.openmind.adapter.BaseAdapter;
+import com.tcl.openmind.R;
+
+import butterknife.InjectView;
 
 
 /**
@@ -24,6 +26,7 @@ public abstract class BaseFragment extends Fragment {
     private Context mContext;
     private LinearLayoutManager mLayoutManager;
 
+    @InjectView(R.id.progress)
     protected ProgressBar mProgressBar;
 
     RecyclerView.OnScrollListener loadingMoreListener;
@@ -73,14 +76,14 @@ public abstract class BaseFragment extends Fragment {
                     int pastVisibleItems = mLayoutManager.findFirstVisibleItemPosition();
                     if (!isLoading() && (visibleItemCount + pastVisibleItems) >= totalItemCount) {
                         setLoading(true);
-                        loadMoreDate();
+                        loadMoreData();
                     }
                 }
             }
         };
     }
 
-    protected void checkNetwork() {
+    protected boolean checkNetwork() {
         final ConnectivityManager connectivityManager
                 = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -90,6 +93,7 @@ public abstract class BaseFragment extends Fragment {
         if (!isNetworkAvailable()) {//不判断容易抛出空指针异常
             LogUtils.d("Network is bad");
         }
+        return isNetworkAvailable();
     }
 
     public void hideProgressBar() {
@@ -104,8 +108,10 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    public abstract void loadDate();
+    protected abstract void initView();
 
-    public abstract void loadMoreDate();
+    public abstract void loadData();
+
+    public abstract void loadMoreData();
 
 }

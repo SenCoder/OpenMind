@@ -1,7 +1,6 @@
 package com.tcl.openmind.ui.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.util.SimpleArrayMap;
@@ -20,7 +19,7 @@ import android.widget.Toast;
 import com.lidroid.xutils.util.LogUtils;
 import com.tcl.openmind.R;
 import com.tcl.openmind.ui.fragment.BaseFragment;
-import com.tcl.openmind.ui.fragment.LookFragment;
+import com.tcl.openmind.ui.fragment.GankFragment;
 import com.tcl.openmind.ui.fragment.NeteaseFragment;
 import com.tcl.openmind.ui.fragment.ZhihuFragment;
 import com.tcl.openmind.util.SharePreferenceUtil;
@@ -188,7 +187,7 @@ public class MainActivity extends AppCompatActivity
                 fragment=new NeteaseFragment();
                 break;
             case R.id.nav_kankan:
-                fragment=new LookFragment();
+                fragment=new GankFragment();
                 break;
 
         }

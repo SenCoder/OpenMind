@@ -23,15 +23,16 @@ import rx.Observable;
 public interface GankApi {
 
     @GET("/api/data/福利/{number}/{index}")
-    Observable<GirlData> getGirlData(@Path("number") String number, @Path("index") String index);
+    Observable<GirlData> getGirlData(@Path("number") String number,
+                                     @Path("index") String index);
 
     @GET("/api/data/Android/{number}/{index}")
-    Observable<PageData> getAndroidPages(@Path("number") String number, @Path("index") String index);
+    Observable<PageData> getAndroidPages(@Path("number") String number,
+                                         @Path("index") String index);
 
     @GET("/api/data/day/{year}/{month}/{day}")
     Observable<PageData> getDataByDate(@Path("year") String year,
                                        @Path("month") String month,
                                        @Path("day") String day);
-
 
 }

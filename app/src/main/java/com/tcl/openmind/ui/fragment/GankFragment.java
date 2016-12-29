@@ -9,11 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.tcl.openmind.R;
-import com.tcl.openmind.adapter.LookAdapter;
-import com.tcl.openmind.presenter.imp.LookPresenter;
+import com.tcl.openmind.adapter.GankAdapter;
+import com.tcl.openmind.data.gank.PageData;
+import com.tcl.openmind.presenter.imp.GankPresenter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -22,26 +22,22 @@ import butterknife.InjectView;
  * Created by shengyuan on 16-12-19.
  */
 
-public class LookFragment extends BaseFragment {
+public class GankFragment extends BaseFragment {
 
-//    @InjectView(R.id.progress)
-//    private ProgressBar mProgressBar;
-
-    @InjectView(R.id.recycle_look)
+    @InjectView(R.id.recycle_gank)
     protected RecyclerView mRecyclerView;
 
-    private LookPresenter mPresenter;
-    private LookAdapter mAdapter;
+    private GankPresenter mPresenter;
+    private GankAdapter mAdapter;
     private Context mContext;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = LayoutInflater.from(mContext = getContext()).inflate(R.layout.fm_look, container, false);
+        View view = LayoutInflater.from(mContext = getContext()).inflate(R.layout.fm_gank, container, false);
 
         ButterKnife.inject(this, view);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
         return view;
     }
 
@@ -52,9 +48,8 @@ public class LookFragment extends BaseFragment {
         initListener();
         initView();
 
-        checkNetwork();
-        if (isNetworkAvailable()) {
-            mPresenter.loadAndroidData();
+        if (checkNetwork()) {
+            loadData();
         }
     }
 
@@ -65,9 +60,10 @@ public class LookFragment extends BaseFragment {
         mPresenter.unSubscribe();
     }
 
-    private void initView() {
-        mPresenter = new LookPresenter(this);
-        mAdapter = new LookAdapter(mContext);
+    @Override
+    protected void initView() {
+        mPresenter = new GankPresenter(this);
+        mAdapter = new GankAdapter(mContext);
 
         mRecyclerView.setLayoutManager(getLayoutManager());
         mRecyclerView.setHasFixedSize(true);
@@ -78,27 +74,26 @@ public class LookFragment extends BaseFragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-//    @Override
-//    public void showProgressDialog() {
-//        if (mProgressBar != null) {
-//            mProgressBar.setVisibility(View.VISIBLE);
-//        }
-//    }
-
-//    @Override
-//    public void hideProgressDialog() {
-//        if (mProgressBar != null) {
-//            mProgressBar.setVisibility(View.INVISIBLE);
-//        }
-//    }
-
     @Override
-    public void loadDate() {
-
+    public void loadData() {
+        if (mAdapter.getItemCount() > 0) {
+            mAdapter.clearData();
+        }
+        mPresenter.loadAndroidData();
     }
 
     @Override
-    public void loadMoreDate() {
+    public void loadMoreData() {
 
     }
+
+    public void updateList(PageData pageData) {
+        if (isLoading()) {
+            setLoading(false);
+            mAdapter.loadingEnd();
+        }
+        hideProgressBar();
+        mAdapter.addItems(pageData.getResults());
+    }
+
 }

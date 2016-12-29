@@ -65,14 +65,6 @@ public class NeteaseAdapter extends BaseAdapter {
         }
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (position < getItemCount() && getItemCount() > 0) {
-            return  NOMAL_ITEM;
-        }
-        return TYPE_LOADING_MORE;
-    }
-
     private void bindViewHolderNormal(final NeteaseViewHolder holder) {
         final NeteaseNews newsItem = mNewsList.get(holder.getAdapterPosition());
 
@@ -144,7 +136,7 @@ public class NeteaseAdapter extends BaseAdapter {
         }
     }
 
-    static class LoadingMoreHolder extends RecyclerView.ViewHolder {
+    protected static class LoadingMoreHolder extends RecyclerView.ViewHolder {
         ProgressBar progressBar;
 
         public LoadingMoreHolder(View itemView) {
@@ -153,7 +145,7 @@ public class NeteaseAdapter extends BaseAdapter {
         }
     }
 
-    static class NeteaseViewHolder extends RecyclerView.ViewHolder {
+    protected static class NeteaseViewHolder extends RecyclerView.ViewHolder {
         final TextView textView;
         final LinearLayout linearLayout;
         final TextView sourceTextview;

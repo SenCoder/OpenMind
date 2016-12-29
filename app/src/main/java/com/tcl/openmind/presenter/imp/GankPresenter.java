@@ -1,16 +1,11 @@
 package com.tcl.openmind.presenter.imp;
 
-import android.content.Context;
-
 import com.lidroid.xutils.util.LogUtils;
 import com.tcl.openmind.core.ApiManager;
 import com.tcl.openmind.data.gank.PageData;
-import com.tcl.openmind.ui.fragment.BaseFragment;
-import com.tcl.openmind.ui.fragment.LookFragment;
+import com.tcl.openmind.ui.fragment.GankFragment;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import rx.Observer;
 import rx.Subscription;
@@ -21,11 +16,11 @@ import rx.schedulers.Schedulers;
  * Created by shengyuan on 16-12-19.
  */
 
-public class LookPresenter extends BasePresenter {
+public class GankPresenter extends BasePresenter {
 
-    private LookFragment mFragment;
+    private GankFragment mFragment;
 
-    public LookPresenter(LookFragment fragment) {
+    public GankPresenter(GankFragment fragment) {
         mFragment = fragment;
     }
 
@@ -57,6 +52,7 @@ public class LookPresenter extends BasePresenter {
                             LogUtils.d(bean.getUrl());
                             LogUtils.d("check bean.getImages() != null: " + (bean.getImages() != null));
                         }
+                        mFragment.updateList(pageData);
                     }
                 });
         addSubscription(subscription);
